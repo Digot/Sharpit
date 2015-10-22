@@ -43,17 +43,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrap\Bootstrap.cs" />
+    <Compile Include="Bootstrap\SharpitConfig.cs" />
     <Compile Include="Bootstrap\SharpitServer.cs" />
+    <Compile Include="Configuration\Annotation.cs" />
+    <Compile Include="Configuration\ConfigManager.cs" />
+    <Compile Include="Configuration\Configuration.cs" />
+    <Compile Include="Configuration\ConfigurationException.cs" />
     <Compile Include="Network\Packet\Packet.cs" />
     <Compile Include="Network\Packet\PacketHandler.cs" />
     <Compile Include="Network\Packet\PacketType.cs" />
     <Compile Include="Network\Server\Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\Logging\Logger.cs" />
-    <Compile Include="Util\Logging\LoggingLevel.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LoggingLevel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Util\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -35,5 +35,10 @@ namespace Sharpit.Util.Logging
             output(LoggingLevel.DEBUG, message);
 #endif
         }
+
+        public void info(string message)
+        {
+            output(LoggingLevel.INFO,message);
+        }
     }
 }

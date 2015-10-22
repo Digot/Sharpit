@@ -28,7 +28,7 @@ namespace Sharpit.Network.Server
         {
         }
 
-        public static void StartListening()
+        public static void StartListening(int port)
         {
             // Data buffer for incoming data.
             byte[] bytes = new Byte[1024];
@@ -38,7 +38,7 @@ namespace Sharpit.Network.Server
             // running the listener is "host.contoso.com".
             IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
             IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, port);
 
             // Create a TCP/IP socket.
             Socket listener = new Socket(AddressFamily.InterNetwork,
@@ -78,6 +78,7 @@ namespace Sharpit.Network.Server
 
         public static void AcceptCallback(IAsyncResult ar)
         {
+            Console.WriteLine("Received");
             // Signal the main thread to continue.
             allDone.Set();
 
