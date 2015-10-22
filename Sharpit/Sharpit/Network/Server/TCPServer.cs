@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Sharpit.Network.Server
 {
@@ -47,33 +50,34 @@ namespace Sharpit.Network.Server
             // Bind the socket to the local endpoint and listen for incoming connections.
             try
             {
+                Console.WriteLine(localEndPoint);
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
 
-                while (true)
+                Task.Factory.StartNew(() =>
                 {
-                    // Set the event to nonsignaled state.
-                    allDone.Reset();
+                    while (true)
+                    {
+                        // Set the event to nonsignaled state.
+                        allDone.Reset();
 
-                    // Start an asynchronous socket to listen for connections.
-                    Console.WriteLine("Waiting for a connection...");
-                    listener.BeginAccept(
-                        new AsyncCallback(AcceptCallback),
-                        listener);
+                        // Start an asynchronous socket to listen for connections.
+                        Console.WriteLine("Waiting for a connection...");
+                        listener.BeginAccept(
+                            AcceptCallback,
+                            listener);
 
-                    // Wait until a connection is made before continuing.
-                    allDone.WaitOne();
-                }
+                        // Wait until a connection is made before continuing.
+                        allDone.WaitOne();
+                    }
+                });
+
 
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
-
-            Console.WriteLine("\nPress ENTER to continue...");
-            Console.Read();
-
         }
 
         public static void AcceptCallback(IAsyncResult ar)
@@ -104,9 +108,49 @@ namespace Sharpit.Network.Server
 
             // Read data from the client socket. 
             int bytesRead = handler.EndReceive(ar);
-
             if (bytesRead > 0)
             {
+
+                //length of data + length of packetid
+                //packetid
+                //data
+
+                byte packetID = 0x00;
+                int packetIDInt = 0;
+
+                byte[] dataPayload = Encoding.ASCII.GetBytes(File.ReadAllText("response.txt"));
+
+                int dataLengthPacketLength = 1 + dataPayload.Length;
+
+               
+                byte[] final = new byte[dataLengthPacketLength+1];
+
+                byte[] tmp = BitConverter.GetBytes(dataLengthPacketLength);
+
+
+                for (int i = 0; i < tmp.Length; i++)
+                {
+                    Console.Write(tmp[i] + (i < tmp.Length-1 ? "," : ""));
+                }
+
+                //final[0] = 
+
+                for (int i = 0; i < dataPayload.Length; i++)
+                {
+                    final[i + 1] = dataPayload[i];
+                }
+                Console.WriteLine("BYTES BEGINN ------------");
+                for (int i = 0; i < 10; i++)
+                {
+                    Console.WriteLine(state.buffer[i]);
+                }
+                Console.WriteLine("BYTES END ---------------");
+                //handler.Send(new byte[] {1 + byteData.Length}, SocketFlags.None);
+             //  handler.BeginSend(final, 0, final.Length, 0,new AsyncCallback(SendCallback), handler);
+               // Console.WriteLine("Sent response!");
+               // Send(handler, );
+                Console.WriteLine("a");
+              
                 // There  might be more data, so store the data received so far.
                 state.sb.Append(Encoding.ASCII.GetString(
                     state.buffer, 0, bytesRead));
@@ -114,14 +158,13 @@ namespace Sharpit.Network.Server
                 // Check for end-of-file tag. If it is not there, read 
                 // more data.
                 content = state.sb.ToString();
-                if (content.IndexOf("<EOF>") > -1)
+                if (content.IndexOf("<EOF>", StringComparison.Ordinal) > -1)
                 {
                     // All the data has been read from the 
                     // client. Display it on the console.
-                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
-                        content.Length, content);
+
                     // Echo the data back to the client.
-                    Send(handler, content);
+                    //Send(handler, content);
                 }
                 else
                 {
@@ -130,6 +173,9 @@ namespace Sharpit.Network.Server
                     new AsyncCallback(ReadCallback), state);
                 }
             }
+
+            Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
+                        content.Length, content);
         }
 
         private static void Send(Socket handler, String data)
@@ -147,7 +193,7 @@ namespace Sharpit.Network.Server
             try
             {
                 // Retrieve the socket from the state object.
-                Socket handler = (Socket) ar.AsyncState;
+                Socket handler = (Socket)ar.AsyncState;
 
                 // Complete sending the data to the remote device.
                 int bytesSent = handler.EndSend(ar);

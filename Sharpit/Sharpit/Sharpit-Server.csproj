@@ -45,6 +45,10 @@
     <Compile Include="Bootstrap\Bootstrap.cs" />
     <Compile Include="Bootstrap\SharpitConfig.cs" />
     <Compile Include="Bootstrap\SharpitServer.cs" />
+    <Compile Include="Command\Command.cs" />
+    <Compile Include="Command\CommandSender.cs" />
+    <Compile Include="Command\CommandStop.cs" />
+    <Compile Include="Command\ConsoleReader.cs" />
     <Compile Include="Configuration\Annotation.cs" />
     <Compile Include="Configuration\ConfigManager.cs" />
     <Compile Include="Configuration\Configuration.cs" />
@@ -52,7 +56,7 @@
     <Compile Include="Network\Packet\Packet.cs" />
     <Compile Include="Network\Packet\PacketHandler.cs" />
     <Compile Include="Network\Packet\PacketType.cs" />
-    <Compile Include="Network\Server\Server.cs" />
+    <Compile Include="Network\Server\TCPServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LoggingLevel.cs" />

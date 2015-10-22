@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using Sharpit.Command;
 using Sharpit.Configuration;
+using Sharpit.Logging;
 using Sharpit.Network.Server;
 using Sharpit.Util.Logging;
 
@@ -35,6 +37,13 @@ namespace Sharpit.Bootstrap
             /// 
             stopwatch.Stop();
             logger.info("Done! Startup took " + stopwatch.ElapsedMilliseconds + "ms");
+
+            ConsoleReader.Read(">");
+        }
+
+        public static void Stop()
+        {
+            
         }
     }
 }

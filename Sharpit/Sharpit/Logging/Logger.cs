@@ -1,6 +1,7 @@
 ﻿using System;
+using Sharpit.Util.Logging;
 
-namespace Sharpit.Util.Logging
+namespace Sharpit.Logging
 {
     public class Logger
     {
@@ -18,6 +19,14 @@ namespace Sharpit.Util.Logging
 
         private void output(LoggingLevel level, String message)
         {
+            if (Console.CursorLeft > 0)
+            {
+                for (int i = Console.CursorLeft-1; i > 0; i--)
+                {
+                    Console.Write("\b");
+                }
+            }
+
             ConsoleColor prevColor = Console.ForegroundColor;
             Console.Write("{0} [{1}] [", DateTime.Now.ToLongTimeString(), loggerClass.Name);
             Console.ForegroundColor = level.ConsoleColor;
