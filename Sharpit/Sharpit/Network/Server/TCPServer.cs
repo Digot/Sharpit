@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sharpit.Network.DefinedPackets;
+using System;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -97,6 +98,8 @@ namespace Sharpit.Network.Server
                 new AsyncCallback(ReadCallback), state);
         }
 
+        private static int c = 1;
+
         public static void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
@@ -110,72 +113,14 @@ namespace Sharpit.Network.Server
             int bytesRead = handler.EndReceive(ar);
             if (bytesRead > 0)
             {
-
-                //length of data + length of packetid
-                //packetid
-                //data
-
-                byte packetID = 0x00;
-                int packetIDInt = 0;
-
-                byte[] dataPayload = Encoding.ASCII.GetBytes(File.ReadAllText("response.txt"));
-
-                int dataLengthPacketLength = 1 + dataPayload.Length;
-
-               
-                byte[] final = new byte[dataLengthPacketLength+1];
-
-                byte[] tmp = BitConverter.GetBytes(dataLengthPacketLength);
-
-
-                for (int i = 0; i < tmp.Length; i++)
-                {
-                    Console.Write(tmp[i] + (i < tmp.Length-1 ? "," : ""));
-                }
-
-                //final[0] = 
-
-                for (int i = 0; i < dataPayload.Length; i++)
-                {
-                    final[i + 1] = dataPayload[i];
-                }
-                Console.WriteLine("BYTES BEGINN ------------");
-                for (int i = 0; i < 10; i++)
-                {
-                    Console.WriteLine(state.buffer[i]);
-                }
-                Console.WriteLine("BYTES END ---------------");
+                if(c % 2 == 0 ) new ListPingPacketHandler().Receive(handler, new ListPingPacket());
+                c++;
                 //handler.Send(new byte[] {1 + byteData.Length}, SocketFlags.None);
-             //  handler.BeginSend(final, 0, final.Length, 0,new AsyncCallback(SendCallback), handler);
-               // Console.WriteLine("Sent response!");
-               // Send(handler, );
-                Console.WriteLine("a");
-              
-                // There  might be more data, so store the data received so far.
-                state.sb.Append(Encoding.ASCII.GetString(
-                    state.buffer, 0, bytesRead));
-
-                // Check for end-of-file tag. If it is not there, read 
-                // more data.
-                content = state.sb.ToString();
-                if (content.IndexOf("<EOF>", StringComparison.Ordinal) > -1)
-                {
-                    // All the data has been read from the 
-                    // client. Display it on the console.
-
-                    // Echo the data back to the client.
-                    //Send(handler, content);
-                }
-                else
-                {
-                    // Not all data received. Get more.
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                    new AsyncCallback(ReadCallback), state);
-                }
+                //  handler.BeginSend(final, 0, final.Length, 0,new AsyncCallback(SendCallback), handler)
             }
 
-            Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
-                        content.Length, content);
+           // Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
+                  //      content.Length, content);
         }
 
         private static void Send(Socket handler, String data)

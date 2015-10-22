@@ -5,6 +5,10 @@ using Sharpit.Configuration;
 using Sharpit.Logging;
 using Sharpit.Network.Server;
 using Sharpit.Util.Logging;
+using System.Collections.Generic;
+using Sharpit.Network.Packet;
+using Sharpit.Network.DefinedPackets;
+using Sharpit.Network;
 
 namespace Sharpit.Bootstrap
 {
@@ -13,6 +17,7 @@ namespace Sharpit.Bootstrap
 
         private Logger logger = Logger.get(typeof(SharpitServer));
         private SharpitConfig config;
+        private Dictionary<Type, PacketHandler> packetHandlers = new Dictionary<Type,PacketHandler>();
 
         public SharpitServer()
         {
@@ -39,6 +44,11 @@ namespace Sharpit.Bootstrap
             logger.info("Done! Startup took " + stopwatch.ElapsedMilliseconds + "ms");
 
             ConsoleReader.Read(">");
+        }
+
+        public void InvokeHandler(Packet packet)
+        {
+
         }
 
         public static void Stop()
