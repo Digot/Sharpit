@@ -5,6 +5,8 @@ using Sharpit.Configuration;
 using Sharpit.Logging;
 using Sharpit.Network.Server;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Net.Mime;
 using Sharpit.Network;
 
 namespace Sharpit.Bootstrap
@@ -27,14 +29,12 @@ namespace Sharpit.Bootstrap
             /// 
             logger.info("Initializing configuration!");
             config = ConfigManager.Load<SharpitConfig>();
-
             ///
             /// Start socket
             /// 
             logger.info("Starting server on port " + config.Port);
-            //AsynchronousSocketListener.StartListening(config.Port);
             new McServer(config.Port);
-
+            
             ///
             /// Done
             /// 
@@ -42,6 +42,20 @@ namespace Sharpit.Bootstrap
             logger.info("Done! Startup took " + stopwatch.ElapsedMilliseconds + "ms");
 
             ConsoleReader.Read(">");
+        }
+
+        public string GetStringFromImage(Image image)
+        {
+            if (image != null)
+            {
+                ImageConverter ic = new ImageConverter();
+                byte[] buffer = (byte[])ic.ConvertTo(image, typeof(byte[]));
+                return Convert.ToBase64String(
+                    buffer,
+                    Base64FormattingOptions.InsertLineBreaks);
+            }
+            else
+                return null;
         }
 
         public void InvokeHandler(Packet packet)
