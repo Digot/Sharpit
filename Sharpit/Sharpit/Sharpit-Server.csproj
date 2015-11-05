@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,12 +57,14 @@
     <Compile Include="Configuration\ConfigManager.cs" />
     <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Configuration\ConfigurationException.cs" />
-    <Compile Include="Network\DefinedPackets\ListPingPacket.cs" />
+    <Compile Include="Network\DefinedPackets\Handshake.cs" />
+    <Compile Include="Network\DefinedPackets\ListPing.cs" />
+    <Compile Include="Network\DefinedPackets\Request.cs" />
+    <Compile Include="Network\IOHandler.cs" />
     <Compile Include="Network\ListPingPacketHandler.cs" />
-    <Compile Include="Network\Packet\Packet.cs" />
-    <Compile Include="Network\Packet\PacketHandler.cs" />
-    <Compile Include="Network\Packet\PacketType.cs" />
-    <Compile Include="Network\Server\TCPServer.cs" />
+    <Compile Include="Network\Packet.cs" />
+    <Compile Include="Network\PacketHandler.cs" />
+    <Compile Include="Network\Server\MCServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LoggingLevel.cs" />
@@ -67,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -4,10 +4,7 @@ using Sharpit.Command;
 using Sharpit.Configuration;
 using Sharpit.Logging;
 using Sharpit.Network.Server;
-using Sharpit.Util.Logging;
 using System.Collections.Generic;
-using Sharpit.Network.Packet;
-using Sharpit.Network.DefinedPackets;
 using Sharpit.Network;
 
 namespace Sharpit.Bootstrap
@@ -35,7 +32,8 @@ namespace Sharpit.Bootstrap
             /// Start socket
             /// 
             logger.info("Starting server on port " + config.Port);
-            AsynchronousSocketListener.StartListening(config.Port);
+            //AsynchronousSocketListener.StartListening(config.Port);
+            new McServer(config.Port);
 
             ///
             /// Done

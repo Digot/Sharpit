@@ -12,7 +12,7 @@ namespace Sharpit.Bootstrap
             /// 
    
             SharpitServer sharpitServer = new SharpitServer();
-            Console.WriteLine("Press a key to close the server!");
+            //Console.WriteLine("Press a key to close the server!");
             Console.ReadKey();
         }
     }

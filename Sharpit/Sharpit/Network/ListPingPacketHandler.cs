@@ -1,4 +1,4 @@
-﻿using Sharpit.Network.Packet;
+﻿using Sharpit.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +13,16 @@ namespace Sharpit.Network
     class ListPingPacketHandler : PacketHandler
     {
 
-        public ListPingPacketHandler() : base(typeof(ListPingPacket))
-        {
+        //public ListPingPacketHandler() : base(typeof(ListPingPacket))
+        //{
 
-        }
+        //}
 
-        public override void Receive(Socket socket, Packet.Packet packet)
-        {
-            Console.WriteLine("Handling ListPing!");
-            String response = File.ReadAllText("motd.txt");
-            packet.Send(socket, response);
-        }
+        //public override void Receive(IOHandler handler, Pack.Packet packet)
+        //{
+        //    //Console.WriteLine("Handling ListPing!");
+        //    //String response = File.ReadAllText("motd.txt");
+        //    //packet.Send(socket, response);
+        //}
     }
 }
